@@ -5,7 +5,7 @@ import streamlit as st
 st.title("CV Builder App built by SMAshhar")
 
 # taking in inputs from users
-jobLink = st.text_input("Paste Job posting text here.")
+jobLink = st.text_area("Paste Job posting text here.")
 user_writeup= st.text_input("Paste write a brief writeup about yourself, your experience and education.")
 github= st.text_input("Your gihub link please")
 cv_data= st.text_area("Paste everything you have done so far here.")
