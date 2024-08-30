@@ -19,6 +19,11 @@ llm = ChatGroq(
 # Listing down all the tools required by Agents
 search_tool = SerperDevTool()
 scrape_tool = ScrapeWebsiteTool()
+
+# incase you have a written JOB post, put them in the same folder and rename job post file to "fake_job.md"
+# same with personal data. If you have written everything and don't want us the UI, you can add the data as "fake_resume.md"
+# you can run the app using "python run app.py" 
+# Followng tools will be able to read through the provided link.But do note to change the "inputs" on line 217
 read_resume = FileReadTool(file_path="./fake_resume.md")
 read_job = FileReadTool(file_path="./fake_job.txt")
 semantic_search_resume = MDXSearchTool(mdx="./fake_resume.md")
@@ -29,7 +34,6 @@ def cv_builder(
     cv_data: str,
     github: str = "",
     user_writeup: str = "",
-    groq_api_key1: str = "",
 ):
     llm = ChatGroq(
         temperature=0, model_name="llama-3.1-70b-versatile", api_key=groq_api_key
@@ -43,12 +47,12 @@ def cv_builder(
             "if a link is given, use scrap tool on the link to learn about the job"
             "otherwise go through the provided text"
         ),
-        tools=[read_job, scrape_tool, semantic_search_job],
+        tools=[search_tool, read_job, scrape_tool, semantic_search_job],
         verbose=True,
         backstory=(
             "As a Job Researcher, your prowess in "
             "navigating and extracting critical "
-            "information from {scrape_tool} is unmatched."
+            "information from {read_job} is unmatched."
             "Your skills help pinpoint the necessary "
             "qualifications and skills sought "
             "by employers, forming the foundation for "
@@ -219,7 +223,7 @@ def cv_builder(
     result = job_application_crew1.kickoff(inputs=inputs)
     return result
 
-
+cv_builder(jobLink="", cv_data="", github="", user_writeup="")
 # from IPython.display import Markdown, display
 
 # display(Markdown("./tailored_resume.md"))
